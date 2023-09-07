@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'ckeditor',
     'ckeditor_uploader',
+    'corsheaders',
 
     'lazermig_.apps.catalog',
     'lazermig_.apps.feedbacks',
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -119,3 +121,4 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
 CKEDITOR_FILENAME_GENERATOR = 'lazermig_.utils.get_filename'
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
+CORS_ALLOW_ALL_ORIGINS = True
