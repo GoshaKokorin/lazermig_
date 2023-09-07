@@ -18,13 +18,13 @@ class ProductTagSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'image', 'position']
+        fields = ['image', 'position']
 
 
 class ProductCharacteristicSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCharacteristic
-        fields = ['id', 'name', 'value', 'position']
+        fields = ['name', 'value', 'position']
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -32,7 +32,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'category', 'slug', 'name', 'short_description', 'product_images']
+        fields = ['category', 'slug', 'name', 'short_description', 'product_images']
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):

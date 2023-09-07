@@ -1,8 +1,20 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
-from ckeditor_uploader.fields import RichTextUploadingField
 
 from lazermig_.utils import image_upload_to, generate_slug
+
+
+class NewsTag(models.Model):
+    name = models.CharField('Название', max_length=64)
+
+    class Meta:
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
+        ordering = ['-id']
+
+    def __str__(self):
+        return self.name
 
 
 class News(models.Model):
@@ -13,6 +25,8 @@ class News(models.Model):
     description = RichTextUploadingField(verbose_name='Описание')
     date = models.DateField('Дата', auto_now=True)
     is_active = models.BooleanField('Активность', default=False)
+
+    tags = models.ManyToManyField(NewsTag, verbose_name='Теги')
 
     class Meta:
         verbose_name = 'Новость'
