@@ -17,13 +17,14 @@ class NewsTag(models.Model):
         return self.name
 
 
+# TODO: Сделать добавление видео и прочее
 class News(models.Model):
     title = models.CharField('Название', max_length=255)
     slug = AutoSlugField('Slug', populate_from='title', slugify_function=generate_slug)
     image = models.ImageField('Изображение', upload_to=image_upload_to)
     short_description = models.CharField('Короткое описание', max_length=255)
     description = RichTextUploadingField(verbose_name='Описание')
-    date = models.DateField('Дата', auto_now=True)
+    date = models.DateField('Дата публикации')
     is_active = models.BooleanField('Активность', default=False)
 
     tags = models.ManyToManyField(NewsTag, verbose_name='Теги')
