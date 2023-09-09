@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from lazermig_.apps.news.models import News
+from lazermig_.apps.news.models import News, NewsTag
+
+
+class NewsTagsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsTag
+        fields = ['id', 'name']
 
 
 class NewsListSerializer(serializers.ModelSerializer):

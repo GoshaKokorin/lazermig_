@@ -26,10 +26,12 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'corsheaders',
+    'django_filters',
 
     'lazermig_.apps.catalog',
     'lazermig_.apps.feedbacks',
     'lazermig_.apps.news',
+    'lazermig_.apps.main',
 ]
 
 MIDDLEWARE = [
@@ -107,6 +109,7 @@ PHONENUMBER_DEFAULT_FORMAT = 'E164'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SPECTACULAR_SETTINGS = {
