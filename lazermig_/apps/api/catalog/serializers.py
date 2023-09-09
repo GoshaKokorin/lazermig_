@@ -9,6 +9,12 @@ class CategoryListSerializer(serializers.ModelSerializer):
         fields = ['name', 'slug', 'image']
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name', 'slug']
+
+
 class ProductTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
@@ -29,6 +35,7 @@ class ProductCharacteristicSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     product_images = ProductImageSerializer(many=True, read_only=True)
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Product

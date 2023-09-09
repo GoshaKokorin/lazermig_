@@ -1,5 +1,4 @@
 from rest_framework import mixins, viewsets, permissions
-from rest_framework.response import Response
 
 from lazermig_.apps.api.mixins import MultiSerializerViewSetMixin
 from lazermig_.apps.api.pagination import PageNumberPagination
@@ -36,15 +35,7 @@ class ProductViewSet(
     lookup_field = 'slug'
 
     def list(self, request, *args, **kwargs):
-        qs = super().list(request, *args, **kwargs)
-        category = Category.objects.get(id=qs.data['results'][0]['category'])
-        return Response({
-            "category": {
-                "name": category.name,
-                "slug": category.slug
-            },
-            "products": qs.data
-        })
+        return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
