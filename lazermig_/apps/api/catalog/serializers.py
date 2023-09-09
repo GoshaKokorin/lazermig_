@@ -40,19 +40,19 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField(read_only=True)
     tags = serializers.StringRelatedField(many=True, read_only=True)
     product_characteristics = ProductCharacteristicSerializer(many=True, read_only=True)
+    related_products = ProductListSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
         fields = [
             'id', 'category', 'tags', 'slug', 'name', 'description', 'price', 'additional_title',
             'additional_description', 'advantages', 'accessories', 'guarantees', 'product_images',
-            'product_characteristics',
+            'product_characteristics', 'related_products',
         ]
 
-    # def to_representation(self, obj):
-    #     ret = super().to_representation(obj)
-    #     if not ret['related_products']:
-    #         queryset = Product.objects.filter(is_active=True).exclude(id=obj.id)[:4]
-    #         serializer = ProductListSerializer(queryset, many=True)
-    #         ret['related_products'] = serializer.data
-    #     return ret
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        queryset = Product.objects.filter(is_active=True).exclude(id=obj.id).order_by('?')[:4]
+        serializer = ProductListSerializer(queryset, many=True)
+        ret['related_products'] = serializer.data
+        return ret
