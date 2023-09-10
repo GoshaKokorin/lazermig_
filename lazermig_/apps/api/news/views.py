@@ -1,4 +1,6 @@
-import django_filters as drf_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import FilterSet, filters
+from django_filters.widgets import CSVWidget
 from rest_framework import mixins, viewsets, permissions
 from rest_framework.response import Response
 
@@ -8,16 +10,21 @@ from lazermig_.apps.news.models import News, NewsTag
 from .serializers import NewsDetailSerializer, NewsListSerializer, NewsTagsSerializer
 
 
-class NumberInFilter(drf_filters.BaseInFilter, drf_filters.NumberFilter):
-    pass
-
-
-class NewsFilter(drf_filters.FilterSet):
-    position = NumberInFilter(field_name='tags', distinct=True, )
+class NewsFilter(FilterSet):
+    tags = filters.BaseCSVFilter(
+        distinct=True, widget=CSVWidget(), method='filter_tags'
+    )
 
     class Meta:
         model = News
-        fields = []
+        fields = ['tags']
+
+    @staticmethod
+    def filter_tags(queryset, field_name, value):
+        qs = queryset
+        for i in value:
+            qs = qs.filter(tags=i)
+        return qs
 
 
 class NewsViewSet(
@@ -35,8 +42,8 @@ class NewsViewSet(
     permission_classes = [permissions.AllowAny]
     lookup_field = 'slug'
 
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['tags']
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = NewsFilter
 
     def list(self, request, *args, **kwargs):
         news_response = super().list(request, *args, **kwargs)
