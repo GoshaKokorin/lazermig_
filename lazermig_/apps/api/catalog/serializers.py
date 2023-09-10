@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from lazermig_.apps.catalog.models import Category, Product, ProductImage, ProductCharacteristic
+from lazermig_.apps.catalog.models import Category, Product, ProductImage, ProductCharacteristic, ProductTag
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
@@ -9,16 +9,16 @@ class CategoryListSerializer(serializers.ModelSerializer):
         fields = ['name', 'slug', 'image']
 
 
+class ProductTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductTag
+        fields = ['id', 'name']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['name', 'slug']
-
-
-class ProductTagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['id', 'name']
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -34,12 +34,13 @@ class ProductCharacteristicSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
+    tags = serializers.StringRelatedField(many=True, read_only=True)
     product_images = ProductImageSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Product
-        fields = ['category', 'slug', 'name', 'short_description', 'product_images']
+        fields = ['category', 'slug', 'name', 'short_description', 'product_images', 'tags']
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
@@ -57,6 +58,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'product_characteristics', 'related_products',
         ]
 
+    # TODO: Fix link
     def to_representation(self, obj):
         ret = super().to_representation(obj)
         queryset = Product.objects.filter(is_active=True).exclude(id=obj.id).order_by('?')[:4]

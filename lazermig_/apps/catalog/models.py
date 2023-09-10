@@ -4,19 +4,6 @@ from django_extensions.db.fields import AutoSlugField
 from lazermig_.utils import image_upload_to, generate_slug
 
 
-class Category(models.Model):
-    name = models.CharField('Название', max_length=255)
-    slug = AutoSlugField('Slug', populate_from='name', slugify_function=generate_slug)
-    image = models.ImageField('Изображение', upload_to=image_upload_to)
-
-    class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
-
-    def __str__(self):
-        return self.name
-
-
 class ProductTag(models.Model):
     name = models.CharField('Название', max_length=64)
 
@@ -24,6 +11,21 @@ class ProductTag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
         ordering = ['-id']
+
+    def __str__(self):
+        return self.name
+
+
+class Category(models.Model):
+    name = models.CharField('Название', max_length=255)
+    slug = AutoSlugField('Slug', populate_from='name', slugify_function=generate_slug)
+    image = models.ImageField('Изображение', upload_to=image_upload_to)
+
+    tags = models.ManyToManyField(ProductTag, verbose_name='Теги')
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -88,10 +90,4 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Изображение товаров'
         ordering = ['position']
 
-# api/category/{slug}/
-# title, tags
-# api/category/{slug}/products/?tags=1,2
-# api/product/{slug}/
-
-# На главной общая апшика
 # gzip nginx
