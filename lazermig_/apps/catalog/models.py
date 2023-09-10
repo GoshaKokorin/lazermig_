@@ -91,5 +91,7 @@ class ProductImage(models.Model):
 # api/category/{slug}/
 # title, tags
 # api/category/{slug}/products/?tags=1,2
+# api/product/{slug}/
 
+# На главной общая апшика
 # gzip nginx
