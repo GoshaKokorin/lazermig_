@@ -16,8 +16,9 @@ class MainViewSet(mixins.ListModelMixin, viewsets.GenericViewSet, ):
 
     def list(self, request, *args, **kwargs):
         main_response = super().list(request, *args, **kwargs)
-        news_serializer = NewsListSerializer(News.objects.filter(is_active=True)[:3], many=True)
-        category_serializer = CategoryListSerializer(Category.objects.all(), many=True)
+        news_serializer = NewsListSerializer(News.objects.filter(is_active=True)[:3], many=True,
+                                             context={'request': request})
+        category_serializer = CategoryListSerializer(Category.objects.all(), many=True, context={'request': request})
         return Response({
             "slider": main_response.data,
             "news": news_serializer.data,
