@@ -9,23 +9,6 @@ from lazermig_.apps.catalog.models import Category, Product
 from .serializers import CategoryListSerializer, ProductListSerializer, ProductDetailSerializer, ProductTagSerializer
 
 
-class ProductsFilter(FilterSet):
-    tags = filters.BaseCSVFilter(
-        distinct=True, widget=CSVWidget(), method='filter_tags'
-    )
-
-    class Meta:
-        model = Product
-        fields = ['tags']
-
-    @staticmethod
-    def filter_tags(queryset, field_name, value):
-        qs = queryset
-        for i in value:
-            qs = qs.filter(tags=i)
-        return qs
-
-
 class CategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategoryListSerializer
@@ -55,6 +38,7 @@ class ProductViewSet(
         return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
+        self.get_serializer(request)
         return super().retrieve(request, *args, **kwargs)
 
 
@@ -73,6 +57,7 @@ class ProductFilter(FilterSet):
         for i in value:
             qs = qs.filter(tags=i)
         return qs
+
 
 # TODO: fix неправильный слаг
 class CatalogProductAPIView(generics.ListAPIView):
@@ -97,4 +82,3 @@ class CatalogProductAPIView(generics.ListAPIView):
     def get_queryset(self):
         slug = self.kwargs['slug']
         return Product.objects.filter(category__slug=slug).filter(is_active=True)
-

@@ -54,4 +54,5 @@ class NewsViewSet(
         })
 
     def retrieve(self, request, *args, **kwargs):
+        self.get_serializer(request)
         return super().retrieve(request, *args, **kwargs)

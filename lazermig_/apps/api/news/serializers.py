@@ -25,10 +25,10 @@ class NewsDetailSerializer(serializers.ModelSerializer):
         model = News
         fields = ['title', 'slug', 'image', 'description', 'tags', 'date', 'related_news']
 
-    # TODO: Fix link
     def to_representation(self, obj):
+        request = self.context.get('request')
         ret = super().to_representation(obj)
         queryset = News.objects.filter(is_active=True).exclude(id=obj.id)[:3]
-        serializer = NewsListSerializer(queryset, many=True)
+        serializer = NewsListSerializer(queryset, many=True, context={'request': request})
         ret['related_news'] = serializer.data
         return ret
