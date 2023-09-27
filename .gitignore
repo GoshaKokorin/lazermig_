@@ -19,7 +19,7 @@ venv*/
 
 # media and static
 /media/
-/static/*
+/staticfiles_build/*
 !/static/http_errors/
 
 # Log files

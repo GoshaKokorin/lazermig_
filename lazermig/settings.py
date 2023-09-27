@@ -107,7 +107,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -147,3 +148,32 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = ['http://api.lasermig.ru', 'https://lasermig.ru']
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'CMS',
+        'width': '100%',
+        'toolbar_CMS': [
+            ['Format', 'Styles', 'FontSize'],
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            ['TextColor', 'BGColor'],
+            ['Link', 'Unlink'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Undo', 'Redo'],
+            ['Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+            ['SelectAll', 'Find', 'Replace'],
+            ['NumberedList', 'BulletedList'],
+            ['Outdent', 'Indent'],
+            ['Smiley', 'SpecialChar', 'Blockquote', 'HorizontalRule'],
+            ['Table', 'Image', 'Youtube'],
+            ['ShowBlocks', 'Source', 'About']
+
+        ],
+        "removePlugins": "stylesheetparser",
+        'extraPlugins': ','.join(
+            [
+                'youtube',
+            ]
+        )
+    },
+}
